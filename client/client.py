@@ -1,4 +1,12 @@
 import sys
+import requests
+from flask import Flask
+
+app = Flask(__name__)
+
+@app.route('/')
+def hello_world():
+    return 'Hey, we have Flask in a Docker container!'
 
 def get_artist_info(artist_name):
     # use search for an item from Spotify API to get info about an artist
@@ -73,5 +81,5 @@ def process_input():
         else:
             print("Invalid input")
 
-if __name__ == "__main__":
-    process_input()
+if __name__ == '__main__':
+    app.run(host="0.0.0.0")
