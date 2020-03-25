@@ -7,8 +7,14 @@ app = Flask(__name__)
 
 @app.route('/')
 def hello_world():
-    response = requests.post("http://server:5001/hello")
-    return response.json()['pula']
+    response = requests.post('http://server:5001/hello')
+    #return response.json()['pula']
+    return 'sugi pula docker'
+
+@app.route('/server')
+def check_server():
+    response = requests.post("http://server:5001/boss")
+    return response.json()['server']
 
 def get_artist_info(artist_name):
     # use search for an item from Spotify API to get info about an artist
