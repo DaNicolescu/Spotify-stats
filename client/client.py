@@ -6,6 +6,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def hello_world():
+	response = requests.post("http://server:5001/hello")
     return 'Hey, we have Flask in a Docker container!'
 
 def get_artist_info(artist_name):
