@@ -17,9 +17,9 @@ def artists():
 def tracks():
     return render_template("tracks.html")
 
-@app.route('/reccommendations')
+@app.route('/recommendations')
 def reccommendations():
-    return render_template("reccommendations.html")
+    return render_template("recommendations.html")
 
 @app.route('/server')
 def check_server():
