@@ -8,8 +8,7 @@ app = Flask(__name__)
 @app.route('/')
 def hello_world():
     response = requests.post('http://server:5001/hello')
-    #return response.json()['pula']
-    return 'sugi pula docker'
+    return response.json()['pula']
 
 @app.route('/server')
 def check_server():

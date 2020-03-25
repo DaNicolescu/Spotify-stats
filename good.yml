@@ -1,7 +1,7 @@
 version: "3"
 services:
   server:
-    build: ./server
+    image: danicolescu/idp:server
     deploy:
       replicas: 2
       resources:
@@ -15,7 +15,7 @@ services:
     networks:
       - webnet
   client:
-    build: ./client
+    image: danicolescu/idp:client
     deploy:
       replicas: 2
       resources:
