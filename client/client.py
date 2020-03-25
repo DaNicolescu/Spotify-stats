@@ -6,8 +6,9 @@ app = Flask(__name__)
 
 @app.route('/')
 def hello_world():
+    return "pula"
 	response = requests.post("http://server:5001/hello")
-    return 'Hey, we have Flask in a Docker container!'
+    return response
 
 def get_artist_info(artist_name):
     # use search for an item from Spotify API to get info about an artist
