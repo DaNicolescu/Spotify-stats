@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 import sys
 import requests
 import json
@@ -6,9 +6,20 @@ import json
 app = Flask(__name__)
 
 @app.route('/')
-def hello_world():
-    response = requests.post('http://server:5001/hello')
-    return response.json()['pula']
+def homepage():
+    return render_template("index.html")
+
+@app.route('/artists')
+def artists():
+    return render_template("artists.html")
+
+@app.route('/tracks')
+def tracks():
+    return render_template("tracks.html")
+
+@app.route('/reccommendations')
+def reccommendations():
+    return render_template("reccommendations.html")
 
 @app.route('/server')
 def check_server():

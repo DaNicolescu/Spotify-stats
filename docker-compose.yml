@@ -1,29 +1,28 @@
 version: "3"
 services:
+  db:
+    image: mysql:5.7
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: parola
+      MYSQL_DATABASE: test
+      MYSQL_USER: user
+      MYSQL_PASSWORD: parola
+    ports:
+      - "33060:3306"
+    networks:
+      - webnet
   server:
     build: ./server
-    deploy:
-      replicas: 2
-      resources:
-        limits:
-          cpus: "0.2"
-          memory: 50M
-      restart_policy:
-        condition: on-failure
     ports:
       - "5001:5001"
     networks:
       - webnet
+    depends_on:
+      - db
   client:
     build: ./client
-    deploy:
-      replicas: 2
-      resources:
-        limits:
-          cpus: "0.2"
-          memory: 50M
-      restart_policy:
-        condition: on-failure
     ports:
       - "8888:5000"
     networks:
