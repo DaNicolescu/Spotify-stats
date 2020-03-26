@@ -1,5 +1,10 @@
 {% extends "base.html" %}
 {% block title %}Home Page{% endblock %}
 {% block content %}
-<h1>Artists</h1>
+<p>Artist Name</p>
+<form method="POST" role="form" class="form-inline">
+	<input type="text" class="form-control mr-sm-2" name="artist_name" placeholder="Elvis Presley">
+
+	<input type="submit" class="btn btn-secondary" value="Get Info"/>
+</form>
 {% endblock %}

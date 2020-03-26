@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, url_for, redirect
 import sys
 import requests
 import json
@@ -9,9 +9,17 @@ app = Flask(__name__)
 def homepage():
     return render_template("index.html")
 
-@app.route('/artists')
+@app.route("/<artist_name>")
+def display_info(artist_name):
+    return f"<h1>{artist_name}</h1>"
+
+@app.route('/artists', methods=['GET', 'POST'])
 def artists():
-    return render_template("artists.html")
+    if request.method == 'GET':
+        return render_template("artists.html")
+    else:
+        artist = request.form['artist_name']
+        return redirect(url_for("display_info", artist_name=artist))
 
 @app.route('/tracks')
 def tracks():
