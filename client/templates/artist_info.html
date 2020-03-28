@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Home Page{% endblock %}
+{% block content %}
+<div class="container">
+	<div class="row">
+		<div class="col-sm">
+			<p>Artist Name: {{artist_name}}</p>
+			<p>Followers: {{followers}}</p>
+			<p>Popularity: {{popularity}}</p>
+			<p>
+				Genres:
+				{% for genre in genres %}
+					<span class="badge badge-success">{{genre}}</span>
+				{% endfor %}
+			</p>
+		</div>
+		<div class="col-sm">
+			<img src="{{image}}" class="img-fluid" alt="Responsive image" style="width:160px; height: auto;">
+		</div>
+	</div>
+</div>
+<table class="table table-hover">
+	<thead class="thead-dark">
+	<tr>
+		<th scope="col">#</th>
+	  	<th scope="col">Song Name</th>
+	  	<th scope="col">Album Name</th>
+	</tr>
+	</thead>
+	<tbody>
+		{% for i in range(top_tracks|length) %}
+			<tr>
+				<th scope="row">{{i + 1}}</th>
+	  			<td>{{top_tracks[i]}}</td>
+	  			<td>{{album_names[i]}}</td>
+	  		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+{% endblock %}
