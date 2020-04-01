@@ -1,8 +1,19 @@
 {% extends "base.html" %}
 {% block title %}Home Page{% endblock %}
 {% block content %}
-<p>Track name: {{track_name}}</p>
-<p>Album: {{album}}</p>
-<p>Popularity: {{popularity}}</p>
-<p>Duration: {{duration}}</p>
+<div class="container">
+	<div class="row">
+		<div class="col-sm">
+			<p>Track: {{track_name}}</p>
+			<p>Artist: {{artist_name}}</p>
+			<p>Album: {{album}}</p>
+			<p>Release Date: {{release_date}}</p>
+			<p>Popularity: {{popularity}}</p>
+			<p>Duration: {{duration}}</p>
+		</div>
+		<div class="col-sm">
+			<img src="{{album_photo}}" class="img-fluid" alt="Responsive image" style="width:320px; height: auto;">
+		</div>
+	</div>
+</div>
 {% endblock %}
