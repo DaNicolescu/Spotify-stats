@@ -14,7 +14,7 @@ services:
     networks:
       - webnet
   server:
-    image: danicolescu/idp:server
+    build: ./server
     ports:
       - "5001:5001"
     networks:
@@ -22,7 +22,7 @@ services:
     depends_on:
       - db
   client:
-    image: danicolescu/idp:client
+    build: ./client
     ports:
       - "8888:5000"
     networks:
