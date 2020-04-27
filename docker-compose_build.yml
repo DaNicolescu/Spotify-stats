@@ -5,29 +5,47 @@ services:
     command: --default-authentication-plugin=mysql_native_password
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: parola
-      MYSQL_DATABASE: test
-      MYSQL_USER: user
-      MYSQL_PASSWORD: parola
+      MYSQL_DATABASE: "dbase"
+      # So you don't have to use root, but you can if you like
+      MYSQL_USER: "user"
+      # You can use whatever password you like
+      MYSQL_PASSWORD: "password"
+      # Password for root access
+      MYSQL_ROOT_PASSWORD: "password"
     ports:
-      - "33060:3306"
+      - "3306:3306"
+    expose:
+      # Opens port 3306 on the container
+      - "3306"
+    volumes:
+      - ./db_data:/var/lib/mysql
     networks:
       - webnet
+  admin_db:
+    build: ./admin_db
+    ports:
+      - "5002:5002"
+    networks:
+      - webnet
+    links:
+      - db
   server:
     build: ./server
     ports:
       - "5001:5001"
     networks:
       - webnet
-    depends_on:
-      - db
+    links:
+      - admin_db
   client:
     build: ./client
     ports:
       - "8888:5000"
     networks:
       - webnet
-    depends_on:
+    links:
       - server
 networks:
   webnet:
+volumes:
+  db_data:
