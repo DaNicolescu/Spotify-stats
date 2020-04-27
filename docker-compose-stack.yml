@@ -1,93 +1,71 @@
 version: "3"
 services:
-
-  redis:
-    image: redis:alpine
-    networks:
-      - frontend
-    deploy:
-      replicas: 1
-      update_config:
-        parallelism: 2
-        delay: 10s
-      restart_policy:
-        condition: on-failure
   db:
-    image: postgres:9.4
+    image: mysql:5.7
+    command: --default-authentication-plugin=mysql_native_password
     environment:
-      POSTGRES_USER: "postgres"
-      POSTGRES_PASSWORD: "postgres"
+      MYSQL_DATABASE: "dbase"
+      # So you don't have to use root, but you can if you like
+      MYSQL_USER: "user"
+      # You can use whatever password you like
+      MYSQL_PASSWORD: "password"
+      # Password for root access
+      MYSQL_ROOT_PASSWORD: "password"
+    ports:
+      - "3306:3306"
+    #expose:
+      # Opens port 3306 on the container
+      #- "3306"
     volumes:
-      - db-data:/var/lib/postgresql/data
+      - db_data:/var/lib/mysql
     networks:
-      - backend
+      - webnet
     deploy:
       placement:
         constraints: [node.role == manager]
-  vote:
-    image: dockersamples/examplevotingapp_vote:before
+  admin_db:
+    image: danicolescu/idp:admin_db
     ports:
-      - 5000:80
+      - "5002:5002"
     networks:
-      - frontend
-    depends_on:
-      - redis
-    deploy:
-      replicas: 2
-      update_config:
-        parallelism: 2
-      restart_policy:
-        condition: on-failure
-  result:
-    image: dockersamples/examplevotingapp_result:before
-    ports:
-      - 5001:80
-    networks:
-      - backend
+      - webnet
     depends_on:
       - db
     deploy:
       replicas: 1
       update_config:
         parallelism: 2
-        delay: 10s
       restart_policy:
         condition: on-failure
-
-  worker:
-    image: dockersamples/examplevotingapp_worker
-    networks:
-      - frontend
-      - backend
-    depends_on:
-      - db
-      - redis
-    deploy:
-      mode: replicated
-      replicas: 1
-      labels: [APP=VOTING]
-      restart_policy:
-        condition: on-failure
-        delay: 10s
-        max_attempts: 3
-        window: 120s
-      placement:
-        constraints: [node.role == manager]
-
-  visualizer:
-    image: dockersamples/visualizer:stable
+  server:
+    image: danicolescu/idp:server
     ports:
-      - "8080:8080"
-    stop_grace_period: 1m30s
-    volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "5001:5001"
+    networks:
+      - webnet
+    depends_on:
+      - admin_db
     deploy:
-      placement:
-        constraints: [node.role == manager]
-
+      replicas: 4
+      update_config:
+        parallelism: 2
+      restart_policy:
+        condition: on-failure
+  client:
+    image: danicolescu/idp:client
+    ports:
+      - "8888:5000"
+    networks:
+      - webnet
+    depends_on:
+      - server
+    deploy:
+      replicas: 4
+      update_config:
+        parallelism: 2
+      restart_policy:
+        condition: on-failure
 networks:
-  frontend:
-  backend:
-
+  webnet:
 volumes:
-  db-data:
+  db_data:
