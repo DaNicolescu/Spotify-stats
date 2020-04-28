@@ -1,9 +1,12 @@
 from flask import Flask, render_template, request, url_for, redirect
+from prometheus_flask_exporter import PrometheusMetrics
 import sys
 import requests
 import json
 
 app = Flask(__name__)
+metrics = PrometheusMetrics(app)
+metrics.info('app_info', 'Application info', version='1.0.3')
 
 @app.route('/')
 def homepage():
