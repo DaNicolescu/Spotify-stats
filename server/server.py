@@ -1,10 +1,13 @@
 from flask import Flask, request, jsonify
+from prometheus_flask_exporter import PrometheusMetrics
 import json
 import spotipy
 import requests
 from spotipy.oauth2 import SpotifyClientCredentials
 
 app = Flask(__name__)
+metrics = PrometheusMetrics(app)
+metrics.info('server_info', 'Application info', version='1.0.3')
 
 client_credentials_manager = SpotifyClientCredentials(
 	client_id="adef179cbfaf472281e7f19291a20586",

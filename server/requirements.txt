@@ -1,3 +1,4 @@
 flask
 requests
 spotipy
+prometheus-flask-exporter==0.2.0

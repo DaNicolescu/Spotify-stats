@@ -6,7 +6,7 @@ import json
 
 app = Flask(__name__)
 metrics = PrometheusMetrics(app)
-metrics.info('app_info', 'Application info', version='1.0.3')
+metrics.info('client_info', 'Application info', version='1.0.3')
 
 @app.route('/')
 def homepage():
